@@ -1,0 +1,103 @@
+# EXPLAINABILITY — Market Agents Orchestrator
+
+> **Admissibility & Transparency Report for OpenGAP / Agent Passport**  
+> *Agent Name:* Market Agents Orchestrator (`market-agents-orchestrator`)  
+> *Specification:* OpenGAP v0.1.0  
+> *Domain:* Developer Tools / Multi-Harness Agentic Plugin Marketplace  
+
+---
+
+## 1. Overview & Operational Purpose
+
+The **Market Agents Orchestrator** (`market-agents-orchestrator`) is an autonomous multi-harness agentic plugin marketplace and transpilation engine. It addresses the fragmentation of the AI developer tooling ecosystem by maintaining a unified, canonical source of truth for 94 plugins, 202 specialized agents, 184 modular skills, and 105 slash commands.
+
+Rather than forcing developers to rewrite agent prompts and tool bindings for each new framework, the orchestrator ingests canonical Markdown specifications and compiles them into idiomatic native configurations for six premier agent harnesses: Claude Code, OpenAI Codex CLI, Cursor, OpenCode, Antigravity CLI, GitHub Copilot, and Pi. Through rigorous namespace collision checking, automated adapter generation, and catalog curation, the agent ensures seamless cross-platform interoperability.
+
+---
+
+## 2. How the Agent Decides (Decision-Making Logic)
+
+Market Agents Orchestrator operates across a deterministic, multi-stage decision pipeline:
+
+```
+[Plugin Markdown Source] ──> [Schema & Syntax Validation] ──> [Global Collision Scanner]
+                                                                        │
+                                                                        ▼
+[Marketplace Distribution] <── [Catalog Indexing & Test] <── [Harness Adapter Transpilation]
+```
+
+### 2.1 Plugin Source Ingestion & Syntax Verification
+- **Decision:** Determines whether incoming plugin definitions comply with structural and metadata specifications.
+- **Rules:**
+  - Evaluates plugin folders for mandatory files: `plugin.json`, skill directories, agent instructions, and command triggers.
+  - Verifies that all YAML frontmatter headers contain required name and description tags.
+  - Rejects plugins containing malformed JSON schemas or unresolvable tool paths.
+
+### 2.2 Global Collision Detection & Namespace Enforcement
+- **Decision:** Decides whether proposed agent personas, skill slugs, or slash commands conflict with existing marketplace assets.
+- **Rules:**
+  - Runs `check_agent_name_collisions.py` to compare identifiers against all registered marketplace symbols.
+  - Enforces strict slug formatting matching `^[a-z][a-z0-9-]*$` to ensure cross-platform CLI compatibility.
+  - Blocks publication if an agent or skill shadows an existing identifier without an explicit namespace prefix.
+
+### 2.3 Multi-Harness Adapter Transpilation
+- **Decision:** Selects appropriate transpilation templates and compiler rules for each target agent runtime.
+- **Rules:**
+  - Maps canonical definitions to target-native formats: `.claude-plugin/` for Claude Code, `.cursorrules` for Cursor, and OpenGAP skills for Antigravity.
+  - Preserves tool calling semantics and parameter boundaries across framework conversions.
+  - Generates symlinks and registry entries deterministically from source markdown trees.
+
+### 2.4 Marketplace Catalog Indexing & Distribution
+- **Decision:** Determines how newly validated plugins are indexed into versioned catalog feeds.
+- **Rules:**
+  - Rebuilds `marketplace.json` indexes, updating plugin counts, category groupings, and version metadata.
+  - Validates documentation references using `doc_gardener.py` to prevent broken usage guides.
+  - Publishes updated distribution feeds across stable, beta, and nightly release channels.
+
+---
+
+## 3. Data Sources & Inputs Used
+
+| Data Input | Source | Purpose | Data Handling & Privacy |
+| :--- | :--- | :--- | :--- |
+| Canonical Plugin Definitions | Markdown files in `plugins/` directory | Primary source of truth for agents, skills, and commands | Read locally from disk, fully open source |
+| Marketplace Metadata Files | `marketplace.json` and `plugin.json` | Stores registry catalogs, author credits, and categories | Structured JSON schemas, public distribution |
+| Harness Compilation Templates | Adapter scripts in `tools/adapters/` | Drives transpilation logic for each target runtime | Deterministic local code generation |
+| Runtime Test & Benchmark Logs | Test suites in `tools/tests/` and `evals/` | Validates transpiled artifact integrity and accuracy | Processed ephemerally, local test execution |
+
+Market Agents Orchestrator complies with operational security and privacy standards:
+- **No Cloud Data Exfiltration:** All plugin transpilation, collision validation, and catalog compilation execute strictly on the local machine.
+- **Epistemic Isolation:** Plugins and skills are partitioned into self-contained modules, preventing cross-plugin state contamination.
+- **Sanitized Model Payloads:** Prompts generated by plugins are stripped of environment tokens and credentials prior to inference.
+- **Data Minimization:** Only relevant skill instructions and tool schemas are packaged into harness distribution artifacts.
+
+---
+
+## 4. Known Limitations & Failure Modes
+
+Reviewers, auditors, and users should note the following operational constraints:
+
+1. **Harness Capability Asymmetry:**
+   - *Limitation:* Certain advanced features (e.g. native MCP tool servers) may not be supported uniformly across all six harnesses.
+   - *Mitigation:* Graceful degradation to markdown prompt instructions when a target harness lacks native tool calling support.
+
+2. **Upstream Harness CLI Breaking Changes:**
+   - *Limitation:* Updates to external agent runtimes (e.g. Cursor or Claude Code plugin formats) can break adapter assumptions.
+   - *Mitigation:* Decoupled adapter architecture allowing targeted transpiler updates without modifying source plugins.
+
+3. **High Transpilation Volume on Full Builds:**
+   - *Limitation:* Compiling 94 plugins across six harnesses produces thousands of generated files.
+   - *Mitigation:* Incremental build caching in `Makefile` and selective single-harness compilation flags (`HARNESS=<name>`).
+
+4. **Transpiled Directory Drift:**
+   - *Limitation:* Direct edits made to generated harness folders can cause drift from canonical plugin sources.
+   - *Mitigation:* Generated output trees are gitignored and continuously rebuilt during automated CI validation.
+
+---
+
+## 5. Verification, Safety & Human Oversight
+
+- **Real-Time Human Approval Gate:** Adding new plugins, updating release versions, or modifying marketplace registries mandates maintainer review.
+- **Emergency Session Interrupt:** Developers can instantly cancel running transpilation pipelines or rollback broken releases.
+- **Step Quota Guardrails:** Strict recursion counters and build step quotas prevent circular dependency loops during transpilation.
+- **Structured Audit Logging:** Every manifest compilation, collision check, transpiler run, and catalog update is logged with detailed traces.

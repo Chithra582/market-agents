@@ -1,0 +1,13 @@
+name: "documentation-gardener-audit"
+description: "Audits markdown documentation, verifies cross-harness capability matrices, and validates command examples."
+input_schema:
+  type: "object"
+  properties:
+    docs_directory:
+      type: "string"
+      description: "Path to documentation directory to audit."
+    check_links:
+      type: "boolean"
+      description: "Whether to verify relative file links and URL citations."
+  required:
+    - "docs_directory"

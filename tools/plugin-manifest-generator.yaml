@@ -1,0 +1,18 @@
+name: "plugin-manifest-generator"
+description: "Parses plugin directories, validates metadata schemas, and compiles unified marketplace.json registry catalogs."
+input_schema:
+  type: "object"
+  properties:
+    plugin_directory:
+      type: "string"
+      description: "Path to the target plugin directory under plugins/."
+    action:
+      type: "string"
+      enum: ["validate", "compile_manifest", "update_catalog"]
+      description: "Manifest generation operation to execute."
+    target_catalog_path:
+      type: "string"
+      description: "Output path for the compiled marketplace catalog JSON."
+  required:
+    - "plugin_directory"
+    - "action"

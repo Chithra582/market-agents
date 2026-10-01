@@ -1,0 +1,15 @@
+name: "marketplace-registry-publisher"
+description: "Publishes, versions, and tags plugin releases across marketplace distribution endpoints."
+input_schema:
+  type: "object"
+  properties:
+    release_version:
+      type: "string"
+      description: "SemVer release version string."
+    channel:
+      type: "string"
+      enum: ["stable", "beta", "nightly"]
+      description: "Release distribution channel."
+  required:
+    - "release_version"
+    - "channel"

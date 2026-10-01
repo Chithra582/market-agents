@@ -1,0 +1,14 @@
+name: "skill-collision-validator"
+description: "Scans all 94 plugins, 202 agents, and 184 skills to detect namespace collisions, shadowed commands, and broken references."
+input_schema:
+  type: "object"
+  properties:
+    scan_scope:
+      type: "string"
+      enum: ["agents", "skills", "commands", "all"]
+      description: "Identifier category to scan for collisions."
+    strict_mode:
+      type: "boolean"
+      description: "Whether to treat minor name warnings as fatal errors."
+  required:
+    - "scan_scope"
